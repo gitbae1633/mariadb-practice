@@ -1,6 +1,5 @@
 package bookmall.dao;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,45 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookshop.vo.BookVo;
-
+import bookmall.vo.CategoryVo;
 
 public class CategoryDao {
 
-	public void insert(BookVo vo) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			
-			String sql = "insert into book(no, title, author_no) values(null, ?, ?)";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setLong(2, vo.getAuthorNo());
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			// clean up
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public List<BookVo> findAll() {
-		List<BookVo> result = new ArrayList<>();
-		
+	public List<CategoryVo> findAll() {
+		List<CategoryVo> result = new ArrayList<>();
+	
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -55,40 +22,32 @@ public class CategoryDao {
 		try {
 			conn = getConnection();
 			
-			String sql = 
-				"   select a.no, a.title, a.rent, b.name as authorName" +
-				"     from book a, author b" +
-				"    where a.author_no = b.no" +
-				" order by no desc";
+			String sql ="select no, type"
+					+ " from category"
+					+ " order by no asc";
 			pstmt = conn.prepareStatement(sql);
+
 			rs = pstmt.executeQuery();
-			
 			while(rs.next()) {
-				Long no = rs.getLong(1);
-				String title = rs.getString(2);
-				String rent = rs.getString(3);
-				String authorName = rs.getString(4);
-				
-				BookVo vo = new BookVo();
-				vo.setNo(no);
-				vo.setTitle(title);
-				vo.setRent(rent);
-				vo.setAuthorName(authorName);
+				CategoryVo vo = new CategoryVo();
+				vo.setNo(rs.getLong(1));
+				vo.setType(rs.getString(2));
 				
 				result.add(vo);
 			}
-
+			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
-			// clean up
 			try {
 				if(rs != null) {
 					rs.close();
 				}
+				
 				if(pstmt != null) {
 					pstmt.close();
 				}
+				
 				if(conn != null) {
 					conn.close();
 				}
@@ -100,23 +59,20 @@ public class CategoryDao {
 		return result;
 	}
 
-	public void update(BookVo vo) {
+	public void insert(CategoryVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConnection();
 			
-			String sql = 
-				"update book" +
-				"   set rent=?" +
-				" where no=?";
+			String sql = "insert into category values(null, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, vo.getRent());
-			pstmt.setLong(2, vo.getNo());
+			pstmt.setString(1, vo.getType());
 			
 			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -124,6 +80,7 @@ public class CategoryDao {
 				if(pstmt != null) {
 					pstmt.close();
 				}
+				
 				if(conn != null) {
 					conn.close();
 				}
@@ -132,18 +89,18 @@ public class CategoryDao {
 			}
 		}
 	}
-
+	
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
+		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
-
-			String url = "jdbc:mariadb://192.168.10.105:3307/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			String url = "jdbc:mariadb://192.168.10.110:3307/bookmall?charset=utf8";
+			conn = DriverManager.getConnection(url, "bookmall", "bookmall");
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
 		}
-
+		
 		return conn;
 	}
 }

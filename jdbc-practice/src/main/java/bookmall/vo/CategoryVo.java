@@ -1,46 +1,26 @@
 package bookmall.vo;
 
-
 public class CategoryVo {
-	private Long no;
-	private String title;
-	private String rent;
-	private Long authorNo;
-	private String authorName;
+
+	private long no;
+	private String type;
 	
-	public Long getNo() {
+	public long getNo() {
 		return no;
 	}
-	public void setNo(Long no) {
+	public void setNo(long no) {
 		this.no = no;
 	}
-	public String getTitle() {
-		return title;
+	public String getType() {
+		return type;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public String getRent() {
-		return rent;
-	}
-	public void setRent(String rent) {
-		this.rent = rent;
-	}
-	public Long getAuthorNo() {
-		return authorNo;
-	}
-	public void setAuthorNo(Long authorNo) {
-		this.authorNo = authorNo;
-	}
-	public String getAuthorName() {
-		return authorName;
-	}
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
-	}
+	
 	@Override
 	public String toString() {
-		return "BookVo [no=" + no + ", title=" + title + ", rent=" + rent + ", authorNo=" + authorNo + ", authorName="
-				+ authorName + "]";
+		return "CategoryVo [no=" + no + ", type=" + type + "]";
 	}
+	
 }

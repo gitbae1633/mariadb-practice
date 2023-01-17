@@ -1,17 +1,17 @@
 package bookmall.vo;
 
-
 public class BookVo {
-	private Long no;
+
+	private long no;
 	private String title;
-	private String rent;
-	private Long authorNo;
-	private String authorName;
+	private int price;
+	private int categoryNo;
 	
-	public Long getNo() {
+	
+	public long getNo() {
 		return no;
 	}
-	public void setNo(Long no) {
+	public void setNo(long no) {
 		this.no = no;
 	}
 	public String getTitle() {
@@ -20,27 +20,23 @@ public class BookVo {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getRent() {
-		return rent;
+	public int getPrice() {
+		return price;
 	}
-	public void setRent(String rent) {
-		this.rent = rent;
+	public void setPrice(int price) {
+		this.price = price;
 	}
-	public Long getAuthorNo() {
-		return authorNo;
+	public int getCategoryNo() {
+		return categoryNo;
 	}
-	public void setAuthorNo(Long authorNo) {
-		this.authorNo = authorNo;
-	}
-	public String getAuthorName() {
-		return authorName;
-	}
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
+	public void setCategoryNo(int categoryNo) {
+		this.categoryNo = categoryNo;
 	}
 	@Override
 	public String toString() {
-		return "BookVo [no=" + no + ", title=" + title + ", rent=" + rent + ", authorNo=" + authorNo + ", authorName="
-				+ authorName + "]";
+		return "BookVo [no=" + no + ", title=" + title + ", price=" + price + ", categoryNo=" + categoryNo + "]";
 	}
+	
+	
+	
 }

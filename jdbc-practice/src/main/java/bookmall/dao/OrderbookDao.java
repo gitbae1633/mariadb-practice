@@ -8,11 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookmall.vo.BookVo;
+import bookmall.vo.OrderbookVo;
 
-public class BookDao {
-	public List<BookVo> findAll() {
-		List<BookVo> result = new ArrayList<>();
+public class OrderbookDao {
+
+	public List<OrderbookVo> findAll() {
+		List<OrderbookVo> result = new ArrayList<>();
 	
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -21,14 +22,18 @@ public class BookDao {
 		try {
 			conn = getConnection();
 			
-			String sql ="select title, price from book order by no asc";
+			String sql ="select ob.book_no, b.title, ob.quantity"
+					+ " from order_book ob"
+					+ " join book b on ob.book_no = b.no"
+					+ " order by ob.no asc";
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				BookVo vo = new BookVo();
-				vo.setTitle(rs.getString(1));
-				vo.setPrice(rs.getInt(2));
+				OrderbookVo vo = new OrderbookVo();
+				vo.setBookNo(rs.getLong(1));
+				vo.setBookName(rs.getString(2));
+				vo.setQuantity(rs.getInt(3));
 				
 				result.add(vo);
 			}
@@ -56,19 +61,19 @@ public class BookDao {
 		return result;
 	}
 
-	public void insert(BookVo vo) {
+	public void insert(OrderbookVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConnection();
 			
-			String sql = "insert into book values(null, ?, ?, ?)";
+			String sql = "insert into order_book values(null, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setInt(2, vo.getPrice());
-			pstmt.setInt(3, vo.getCategoryNo());
+			pstmt.setInt(1, vo.getQuantity());
+			pstmt.setLong(2, vo.getOrdersNo());
+			pstmt.setLong(3, vo.getBookNo());
 			
 			pstmt.executeUpdate();
 			
